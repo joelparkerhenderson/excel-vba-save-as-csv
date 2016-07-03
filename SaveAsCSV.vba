@@ -11,35 +11,35 @@ Public Sub MkDirIdempotent(dir As String)
   If Not (DirExists(dir)) Then MkDir dir
 End Sub
 
+' Suspend application interactivity to improve speed.
+' Typically call this at the start of a subroutine.
+Public Sub SubStart()
+  Application.ScreenUpdating = False
+  Application.EnableEvents = False
+  Application.DisplayAlerts = False
+  Application.Calculation = xlCalculationManual
+End Sub
+
+' Resume application interactivity as usual.
+' Typically call this inside a "Finally" block.
+Public Sub SubStop()
+  Application.ScreenUpdating = True
+  Application.DisplayAlerts = True
+  Application.EnableEvents = True
+  Application.Calculation = xlCalculationAutomatic
+End Sub
+
 ' Save each worksheet as a CSV file.
 ' This iterates on each worksheet.
-Public Sub SaveAsCSV()
-
-  ' Handle any error within this sub.
-  '
-  ' If you are developing this script, you may want to
-  ' comment out this line so you can see what happens.
-  '
+Public Sub SaveEachWorksheetAsCSV()
+  SubStart
   On Error GoTo OnError
-
-  ' Disable interactive features, temporarily, for speed.
-  ' Enable these later on, in the "Finally" clause.
-  '
-  ' If you are developing this script, you may want to
-  ' comment out these lines so you can see what happens.
-  '
-  With Application
-    .ScreenUpdating = False
-    .EnableEvents = False
-    .DisplayAlerts = False
-    .Calculation = xlCalculationManual
-  End With
 
   ' Get the current workbook, which is the source of our data,
   ' and create a temporary workbook, which is the destination.
-  Set Book = Application.ActiveWorkbook
-  Set Book2 = Application.Workbooks.Add
-
+  Set Book = Application.ActiveWorkbook: Debug.Print "Book " & Book.Name
+  Set Book2 = Application.Workbooks.Add: Debug.Print "Book2 " & Book2.Name
+  
   ' Note: some examples on the net have code that does `Sheet.Copy`.
   ' However, this does not work smoothly when the sheet contains
   ' calculations, macros, or other features incompatible with CSV.
@@ -85,7 +85,7 @@ Public Sub SaveAsCSV()
   Dim OutputExt As String: OutputExt = ".csv"
   Dim OutputDirectory As String
   Dim OutputFileName As String
-
+  
   ' Initialize the output directory
   OutputDirectory = Environ("HOME") & OutputSep & Replace(Book.Name, ".xlsx", "")
   MkDirIdempotent OutputDirectory
@@ -93,10 +93,6 @@ Public Sub SaveAsCSV()
   ' Iterate on each sheet, and save it to a CSV file.
   For Each Sheet In Book.Worksheets
     ' Copy
-    ' TODO: Fix the range setting, by changing it from a preset
-    ' to a calaculated range that includes all the used cells;
-    ' this may not be necessary if it's possible to switch this
-    ' script from copying cells to copying the entire sheet.
     Dim R As String: R = "A1:Z99"
     Sheet.Range(R).Copy
     Book2.Sheets(1).Range(R).PasteSpecial xlPasteValues
@@ -107,12 +103,7 @@ Public Sub SaveAsCSV()
   Book2.Close False
 
 Finally:
-  With Application
-    .ScreenUpdating = True
-    .DisplayAlerts = True
-    .EnableEvents = True
-    .Calculation = xlCalculationAutomatic
-  End With
+  SubStop
   Exit Sub
 
 OnError:
