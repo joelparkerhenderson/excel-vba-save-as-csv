@@ -81,13 +81,11 @@ Public Sub SaveAsCSV()
   '
   '     ls ~/Library/Containers/com.microsoft.Excel/Data/*.csv
   '
-  Dim OutputSep As String: OutputSep = "/"
-  Dim OutputExt As String: OutputExt = ".csv"
   Dim OutputDirectory As String
   Dim OutputFileName As String
   
   ' Initialize the output directory
-  OutputDirectory = Environ("HOME") & OutputSep & Replace(Book.Name, ".xlsx", "")
+  OutputDirectory = Environ("HOME") & Application.PathSeparator & Replace(Book.Name, ".xlsx", "") & ".csv"
   MkDirIdempotent OutputDirectory
 
   ' Iterate on each sheet, and save it to a CSV file.
