@@ -1,18 +1,43 @@
 ' Does a directory exist?
+'
+' Example:
+'
+'     DirExists("C:\Foo") 
+'     => True
+'
 Public Function DirExists(dir As String) As Boolean
   On Error Resume Next
   DirExists = (GetAttr(dir) And vbDirectory) = vbDirectory
   On Error GoTo 0
 End Function
 
-' Make a directory if it doesn't exist already
+' Make a directory if it doesn't exist already.
+
+' Example:
+'
+'     MkDirIdempotent("C:\Foo") 
+'     => If the directory exists, then this does nothing.
+'     => Otherwise, this creates the directory.
+'
 ' TODO: Upgrade this so it creates an entire directory tree.
+'
+' TODO: Handle edge case when a file exists, not a directory.
+'
 Public Sub MkDirIdempotent(dir As String)
   If Not (DirExists(dir)) Then MkDir dir
 End Sub
 
 ' Suspend application interactivity to improve speed.
 ' Typically call this at the beginning of a subroutine.
+'
+' Example:
+'
+'     Public Sub Foo()
+'        SubStart
+'        ...
+'        SubStop
+'     End Sub
+'
 Public Sub SubStart()
   Application.ScreenUpdating = False
   Application.EnableEvents = False
@@ -22,6 +47,15 @@ End Sub
 
 ' Resume application interactivity as usual.
 ' Typically call this at the end of a subroutine.
+'
+' Example:
+'
+'     Public Sub Foo()
+'        SubStart
+'        ...
+'        SubStop
+'     End Sub
+'
 Public Sub SubStop()
   Application.ScreenUpdating = True
   Application.DisplayAlerts = True
@@ -31,6 +65,12 @@ End Sub
 
 ' Save each worksheet as a CSV file.
 ' This iterates on each worksheet.
+'
+' Example:
+'
+'     SaveAsCSV
+'     => for each worksheet, save a CSV file.
+'
 Public Sub SaveAsCSV()
   SubStart
   On Error GoTo OnError
@@ -85,7 +125,7 @@ Public Sub SaveAsCSV()
   Dim OutputFileName As String
   
   ' Initialize the output directory
-  OutputDirectory = Environ("HOME") & Application.PathSeparator & Replace(Book.Name, ".xlsx", "") & ".csv"
+  OutputDirectory = Environ("HOME") & Application.PathSeparator & Replace(Book.Name, ".xlsx", "")
   MkDirIdempotent OutputDirectory
 
   ' Iterate on each sheet, and save it to a CSV file.
@@ -95,7 +135,7 @@ Public Sub SaveAsCSV()
     Sheet.Range(R).Copy
     Book2.Sheets(1).Range(R).PasteSpecial xlPasteValues
     ' Save
-    OutputFileName = OutputDirectory & OutputSep & Sheet.Name & OutputExt
+    OutputFileName = OutputDirectory &  Application.PathSeparator & Sheet.Name & ".csv"
     Book2.SaveAs Filename:=OutputFileName, FileFormat:=xlCSV, CreateBackup:=False
   Next
   Book2.Close False
