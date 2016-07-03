@@ -93,6 +93,8 @@ Public Sub SaveAsCSV()
   ' Iterate on each sheet, and save it to a CSV file.
   For Each Sheet In Book.Worksheets
     ' Copy
+    ' TODO: Fix the range setting, by changing it from a preset
+    ' to a calaculated range that includes all the used cells.
     Dim R As String: R = "A1:Z99"
     Sheet.Range(R).Copy
     Book2.Sheets(1).Range(R).PasteSpecial xlPasteValues
