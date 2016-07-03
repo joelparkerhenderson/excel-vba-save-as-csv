@@ -31,14 +31,14 @@ End Sub
 
 ' Save each worksheet as a CSV file.
 ' This iterates on each worksheet.
-Public Sub SaveEachWorksheetAsCSV()
+Public Sub SaveAsCSV()
   SubStart
   On Error GoTo OnError
 
   ' Get the current workbook, which is the source of our data,
   ' and create a temporary workbook, which is the destination.
-  Set Book = Application.ActiveWorkbook: Debug.Print "Book " & Book.Name
-  Set Book2 = Application.Workbooks.Add: Debug.Print "Book2 " & Book2.Name
+  Set Book = Application.ActiveWorkbook
+  Set Book2 = Application.Workbooks.Add
   
   ' Note: some examples on the net have code that does `Sheet.Copy`.
   ' However, this does not work smoothly when the sheet contains
