@@ -94,7 +94,9 @@ Public Sub SaveAsCSV()
   For Each Sheet In Book.Worksheets
     ' Copy
     ' TODO: Fix the range setting, by changing it from a preset
-    ' to a calaculated range that includes all the used cells.
+    ' to a calaculated range that includes all the used cells;
+    ' this may not be necessary if it's possible to switch this
+    ' script from copying cells to copying the entire sheet.
     Dim R As String: R = "A1:Z99"
     Sheet.Range(R).Copy
     Book2.Sheets(1).Range(R).PasteSpecial xlPasteValues
