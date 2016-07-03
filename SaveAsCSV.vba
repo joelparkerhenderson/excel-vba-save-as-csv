@@ -3,7 +3,7 @@
 ' Example:
 '
 '     DirExists("C:\Foo") 
-'     => True
+'     => return true/false if the directory exists.
 '
 Public Function DirExists(dir As String) As Boolean
   On Error Resume Next
@@ -12,12 +12,12 @@ Public Function DirExists(dir As String) As Boolean
 End Function
 
 ' Make a directory if it doesn't exist already.
-
+'
 ' Example:
 '
 '     MkDirIdempotent("C:\Foo") 
-'     => If the directory exists, then this does nothing.
-'     => Otherwise, this creates the directory.
+'     => If the directory exists, 
+'        then do nothing, otherwise create it.
 '
 ' TODO: Upgrade this so it creates an entire directory tree.
 '
@@ -119,7 +119,9 @@ Public Sub SaveAsCSV()
   '
   ' To see the output CSV files:
   '
-  '     ls ~/Library/Containers/com.microsoft.Excel/Data/*.csv
+  '     cd ~/Library/Containers/com.microsoft.Excel/Data/
+  '     cd <your directory name here>
+  '     ls *.csv
   '
   Dim OutputDirectory As String
   Dim OutputFileName As String
