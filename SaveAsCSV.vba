@@ -12,7 +12,7 @@ Public Sub MkDirIdempotent(dir As String)
 End Sub
 
 ' Suspend application interactivity to improve speed.
-' Typically call this at the start of a subroutine.
+' Typically call this at the beginning of a subroutine.
 Public Sub SubStart()
   Application.ScreenUpdating = False
   Application.EnableEvents = False
@@ -21,7 +21,7 @@ Public Sub SubStart()
 End Sub
 
 ' Resume application interactivity as usual.
-' Typically call this inside a "Finally" block.
+' Typically call this at the end of a subroutine.
 Public Sub SubStop()
   Application.ScreenUpdating = True
   Application.DisplayAlerts = True
