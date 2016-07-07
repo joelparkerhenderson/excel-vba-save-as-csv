@@ -132,12 +132,12 @@ Public Sub SaveAsCSV()
 
   ' Iterate on each sheet, and save it to a CSV file.
   For Each Sheet In Book.Worksheets
+    OutputFileName = OutputDirectory &  Application.PathSeparator & Sheet.Name & ".csv"
     ' Copy
     Dim R As String: R = "A1:Z99"
     Sheet.Range(R).Copy
     Book2.Sheets(1).Range(R).PasteSpecial xlPasteValues
     ' Save
-    OutputFileName = OutputDirectory &  Application.PathSeparator & Sheet.Name & ".csv"
     Book2.SaveAs Filename:=OutputFileName, FileFormat:=xlCSV, CreateBackup:=False
   Next
   Book2.Close False
