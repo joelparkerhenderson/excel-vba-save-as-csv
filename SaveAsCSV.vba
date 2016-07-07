@@ -127,11 +127,21 @@ Public Sub SaveAsCSV()
   Dim OutputFileName As String
   
   ' Initialize the output directory
+  '
+  ' TODO: we know two ways to accomplish this,
+  ' and we want to figure out what's different:
+  '
+  '     FilePath = Application.DefaultFilePath & ...
+  '
+  '     FilePath = Environ("HOME") & ...
+  '
   OutputDirectory = Environ("HOME") & Application.PathSeparator & Replace(Book.Name, ".xlsx", "")
   MkDirIdempotent OutputDirectory
 
   ' Iterate on each sheet, and save it to a CSV file.
   For Each Sheet In Book.Worksheets
+    LastRow = Sheet.UsedRange.SpecialCells(xlCellTypeLastCell).Row
+    LastCol = Sheet.UsedRange.SpecialCells(xlCellTypeLastCell).Column
     OutputFileName = OutputDirectory &  Application.PathSeparator & Sheet.Name & ".csv"
     ' Copy
     Dim R As String: R = "A1:Z99"
