@@ -157,7 +157,7 @@ Finally:
   Exit Sub
 
 OnError:
-  MsgBox "Couldn't save all sheets to CSV." & vbCrLf & _
+  MsgBox "Couldn't save all sheets." & vbCrLf & _
          "Source: " & Err.Source & " " & vbCrLf & _
          "Number: " & Err.Number & " " & vbCrLf & _
          "Description: " & Err.Description & " " & vbCrLf
